@@ -28,6 +28,8 @@ func newMsg(hd int, k, v string, ww *http.ResponseWriter) *Msg {
 	ret.key = k
 	ret.val = v
 	ret.w = ww
+
+	return &ret
 }
 
 var (
