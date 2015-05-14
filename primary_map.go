@@ -11,41 +11,31 @@ var (
 
 func waitForMsg() {
 	for true {
-		switch <-msg_queue.msgChannel {
+		msg := *(<-msg_queue.msgChnl)
+		switch msg.header {
 		case msg_queue.GREETING:
 			{
-				w := greeting.getWriter()
 				// do nothing
 			}
 		case msg_queue.KV_INSERT:
 			{
-				w := handle_insert.getWriter()
-				key, val := handle_insert.getNext()
-				table[key] = val
+				table[msg.key] = msg.val
 			}
 		case msg_queue.KV_DELETE:
 			{
-				w := handle_delete.getWriter()
-				key := handle_delete.getNext()
-				delete(table, key)
+				delete(table, msg.key)
 			}
 		case msg_queue.KV_GET:
 			{
-				w := handle_get.getWriter()
-				key := handle_get.getNext()
-				val := table[key]
-				fmt.Fprintln(w, key+" : "+val)
+				fmt.Fprintln(msg.w, table[msg.key])
 			}
 		case msg_queue.KV_UPDATE:
 			{
-				w := handle_update.getWriter()
-				key, val = handle_update()
-				table[key] = val
+				table[msg.key] = msg.val
 			}
-		case msg_queue.KVMAN_COUNTKEY:
+		case msg_queue.COUNTKEY:
 			{
-				w := handle_counter_key.getWriter()
-				fmt.Fprintf(w, "table-size : %d\n", len(table))
+				fmt.Fprintln(msg.w, len(table))
 			}
 		}
 	}

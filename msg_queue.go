@@ -1,5 +1,9 @@
 package main
 
+import (
+	"net/http"
+)
+
 const (
 	GREETING       = 0
 	KV_INSERT      = 1
@@ -11,6 +15,21 @@ const (
 	KVMAN_SHUTDOWN = 7
 )
 
+type Msg struct {
+	header int
+	key    string
+	val    string
+	w      *http.ReponseWriter
+}
+
+func newMsg(hd int, k, v string, ww *http.ResponseWriter) *Msg {
+	ret := make(Msg)
+	ret.header = hd
+	ret.key = k
+	ret.val = v
+	ret.w = ww
+}
+
 var (
-	msgChnl = make(chan int, 100)
+	msgChnl = make(chan *Msg, 100)
 )
