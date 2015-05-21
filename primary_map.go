@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"msg_queue"
 )
 
 var (
