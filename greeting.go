@@ -14,5 +14,10 @@ func (router GreetingHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) 
 */
 
 func GreetingHandler(w http.ResponseWriter, r *http.Request) {
+
+	rtn_str := Write("Hello, world")
+	fmt.Println("Received Message:" + rtn_str)
+
 	fmt.Fprint(w, "Greetings")
+
 }
