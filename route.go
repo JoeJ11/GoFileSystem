@@ -2,8 +2,8 @@ package main
 
 import (
 	// "log"
-	"net/http"
 	"github.com/gorilla/mux"
+	"net/http"
 )
 
 func main() {
@@ -19,5 +19,6 @@ func main() {
 	r.HandleFunc("/kvman/dump", HandleDump).Methods("GET")
 	r.HandleFunc("/kvman/shutdown", HandleShutdown).Methods("GET")
 
+	go primary_map.waitForMsg()
 	http.ListenAndServe("localhost:4000", r)
 }
